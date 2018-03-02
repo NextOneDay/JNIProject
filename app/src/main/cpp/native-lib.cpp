@@ -10,7 +10,7 @@ void setCStudentData(CStudent *pStudent);
 
 extern "C"
 JNIEXPORT jstring JNICALL
-Java_project_ndk_com_jniproject_MainActivity_callBaseData(JNIEnv *env, jobject instance,
+Java_com_ndk_jniproject_MainActivity_callBaseData(JNIEnv *env, jobject instance,
                                                           jstring str_,
                                                           jint num) {
 
@@ -27,7 +27,7 @@ Java_project_ndk_com_jniproject_MainActivity_callBaseData(JNIEnv *env, jobject i
 
 extern "C"
 JNIEXPORT jintArray JNICALL
-Java_project_ndk_com_jniproject_MainActivity_callInteger(JNIEnv *env, jobject instance,
+Java_com_ndk_jniproject_MainActivity_callInteger(JNIEnv *env, jobject instance,
                                                          jintArray arr_) {
     //传入基本数据类型数组，获取设置传入数组中的数据，创建新数组返回
 
@@ -75,7 +75,7 @@ Java_project_ndk_com_jniproject_MainActivity_callInteger(JNIEnv *env, jobject in
 //二维数组，string数组，对象数组都是类似的
 extern "C"
 JNIEXPORT jobjectArray JNICALL
-Java_project_ndk_com_jniproject_MainActivity_callStudent(JNIEnv *env, jobject instance,
+Java_com_ndk_jniproject_MainActivity_callStudent(JNIEnv *env, jobject instance,
                                                          jobjectArray students) {
 
     //先获取到数组中的对象
@@ -135,7 +135,7 @@ Java_project_ndk_com_jniproject_MainActivity_callStudent(JNIEnv *env, jobject in
  */
 extern "C"
 JNIEXPORT jobjectArray JNICALL
-Java_project_ndk_com_jniproject_MainActivity_calldoubleArray(JNIEnv *env, jobject instance,
+Java_com_ndk_jniproject_MainActivity_calldoubleArray(JNIEnv *env, jobject instance,
                                                              jobjectArray arr) {
 
     //获取二维数组中数据,也可以设置数据
@@ -166,7 +166,7 @@ Java_project_ndk_com_jniproject_MainActivity_calldoubleArray(JNIEnv *env, jobjec
 
 extern "C"
 JNIEXPORT jobjectArray JNICALL
-Java_project_ndk_com_jniproject_MainActivity_callStringArray(JNIEnv *env, jobject instance,
+Java_com_ndk_jniproject_MainActivity_callStringArray(JNIEnv *env, jobject instance,
                                                              jobjectArray stu) {
 
     jclass clzz =env->FindClass("Ljava/lang/String;");
@@ -200,3 +200,10 @@ void setCStudentData(CStudent *pStudent) {
     }
 }
 
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_ndk_jniproject_MainActivity_test(JNIEnv *env, jobject instance) {
+
+    // TODO
+
+}
