@@ -35,4 +35,5 @@ public class MainActivity extends AppCompatActivity {
     public native Student [] callStudent(Student [] students);
     public native int [][] calldoubleArray(int [][] arr);
     public native String[] callStringArray(String [] stu);
+    public native void test();
 }
