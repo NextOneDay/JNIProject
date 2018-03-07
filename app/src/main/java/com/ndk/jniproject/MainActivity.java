@@ -6,7 +6,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import com.ndk.jniproject.bean.ComplexObject;
+import com.ndk.jniproject.bean.ListData;
 import com.ndk.jniproject.bean.Student;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -73,4 +76,22 @@ public class MainActivity extends AppCompatActivity {
      * 传入一个复杂的对象，并获取对象中的数据，然后再创建一个新的复杂对象，并返回
      */
     public native ComplexObject callComplex(ComplexObject com);
+
+    /**
+     * 复杂的数据类型集合类型的数据传递与返回，
+     * 其实与之跟对象集合以及复杂对象的相结合
+     * 数组就是一个复杂对象，在对象中又存在一个比较复杂的对象，这个对象中可能会也会有集合等数据类型
+     */
+    public native ArrayList<Student> callList(ArrayList<Student> al);
+
+    /**
+     * 复杂的数据传递，多层嵌套集合
+     * ArrayList<ListData>:集合中存放的是listdata对象
+     *      --ListData 对象中有多个属性，其中有个string类型，数组类型，也有一个list类型
+     *          -- 对象中这个集合中的泛型是一个简单的对象类型，student
+     *
+     */
+
+    public native  ArrayList<ListData> callCompleList(ArrayList<ListData> list);
+
 }

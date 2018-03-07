@@ -265,8 +265,8 @@ Java_com_ndk_jniproject_MainActivity_callComplex(JNIEnv *env, jobject instance, 
     //通过构造参数传值
     jmethodID inits = env->GetMethodID(clzzs,"<init>","(Ljava/langString;B[IDIJZ)V");
 
-    jobject newobj = env->NewObject(clzz,init,env->NewStringUTF("code"),0,newarr,32.23,12,323423, false);
-
+    //将7个参数传入构造函数中，进行创建新的对象
+    jobject newobj = env->NewObject(clzz,inits,env->NewStringUTF("code"),0,newarr,32.23,12,323423, false);
     return newobj;
 
 
