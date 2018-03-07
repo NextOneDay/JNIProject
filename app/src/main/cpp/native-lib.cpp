@@ -269,6 +269,26 @@ Java_com_ndk_jniproject_MainActivity_callComplex(JNIEnv *env, jobject instance, 
     jobject newobj = env->NewObject(clzz,inits,env->NewStringUTF("code"),0,newarr,32.23,12,323423, false);
     return newobj;
 
+}
+
+//调用复杂的对象类型，比如集合
+//传递一个集合对象，并获取泛型中的数据，创建一个新的对象设置数据后并返回
+
+extern "C"
+JNIEXPORT jobject JNICALL
+Java_com_ndk_jniproject_MainActivity_callList(JNIEnv *env, jobject instance, jobject al) {
+
+
+
+
+}
+
+//传递一个嵌套集合对象，集合中的对象中包含着集合，
+extern "C"
+JNIEXPORT jobject JNICALL
+Java_com_ndk_jniproject_MainActivity_callCompleList(JNIEnv *env, jobject instance, jobject list) {
+
+
 
 
 }
