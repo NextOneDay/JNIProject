@@ -273,13 +273,55 @@ Java_com_ndk_jniproject_MainActivity_callComplex(JNIEnv *env, jobject instance, 
 
 //调用复杂的对象类型，比如集合
 //传递一个集合对象，并获取泛型中的数据，创建一个新的对象设置数据后并返回
+/**
+ * 大概的思路：
+ *      获取集合的class 类型，获取需要get 和size 方法的methodid
+ *      获取size 方法的值然后进入for循环，获取集合中的元素对象
+ *      获取到元素对象，然后就获取对象中的属性值，
+ */
 
 extern "C"
 JNIEXPORT jobject JNICALL
 Java_com_ndk_jniproject_MainActivity_callList(JNIEnv *env, jobject instance, jobject al) {
+    //获取集合中的数据
+    jclass  clzz = env->GetObjectClass(al);
+    jmethodID size = env->GetMethodID(clzz,"size","()I");
+    jint vsize = env->CallIntMethod(al,size);
 
+    //list的get方法需要传入index 然后返回泛型对象
+    jmethodID get= env->GetMethodID(clzz,"get","(I)Lcom/ndk/jniproject/beanStudent;");
 
+    //获取studnet中的属性值
+    jclass stuclzz = env->FindClass("Lcom/ndk/jniproject/beanStudent");
+    jmethodID stuinit= env->GetMethodID(stuclzz,"<init>","()V");
+    jfieldID name = env->GetFieldID(stuclzz,"name","Ljava/lang/String");
+    jfieldID age = env->GetFieldID(stuclzz,"age","I");
+    for (int i = 0; i < vsize; ++i) {
+        //进入循环中来获取对应的对象
+        jobject student =env->CallObjectMethod(al,get,i);
 
+        //通过对象来获取值
+        jint vage = env->GetIntField(student,age);
+        jstring vname= (jstring) env->GetObjectField(student, name);
+    }
+
+    // 创建一个新的对象并设置数据返回
+
+    //根据class 来创建arraylist集合
+//    jclass  arraylist = env->FindClass("Ljava/util/ArrayList;");
+    jmethodID init =env->GetMethodID(clzz,"<init>","()V");
+    jmethodID add= env->GetMethodID(clzz,"add","(com/ndk/jniproject/bean/Student)Z");
+    jobject arrayList= env->NewObject(clzz,init);
+
+    //循环添加数据
+    for (int x = 0; x < 10; ++x) {
+        jobject student= env->NewObject(stuclzz,stuinit);
+        env->SetIntField(student,age,20);
+        env->SetObjectField(student,name,env->NewStringUTF("skldf"));
+        env->CallObjectMethod(clzz,add,student);
+    }
+
+    return arrayList;
 
 }
 
