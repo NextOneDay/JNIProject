@@ -1,4 +1,4 @@
-package com.ndk.jniproject;
+package com.ndk.jniproject.bean;
 
 /**
  * Created by Administrator on 2018/2/28.

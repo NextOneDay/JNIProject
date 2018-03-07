@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
+import com.ndk.jniproject.bean.Student;
+
 public class MainActivity extends AppCompatActivity {
 
     // Used to load the 'native-lib' library on application startup.
@@ -66,5 +68,8 @@ public class MainActivity extends AppCompatActivity {
     public native String[] callStringArray(String [] stu);
 
 
+    /**
+     * 传入一个复杂的对象，并获取对象中的数据，然后再创建一个新的复杂对象，并返回
+     */
     public native void test();
 }
