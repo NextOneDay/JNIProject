@@ -4,7 +4,7 @@
 
 
 /**
- *  这里的方法只是用来表示一些方法的使用和数据的操作，但这些操作并没有实际的应用意义。
+ *  这里的方法只是用来表示一些方法的使用和数据的操作，这些操作并没有实际的应用意义。
  */
 void setCStudentData(CStudent *pStudent);
 
@@ -79,7 +79,7 @@ Java_com_ndk_jniproject_MainActivity_callStudent(JNIEnv *env, jobject instance,
                                                  jobjectArray students) {
 
     //先获取到数组中的对象
-    jclass clzz = env->FindClass("project/ndk/com/jniproject/Student");
+    jclass clzz = env->FindClass("com/ndk/jniproject/bean/Student");
     jmethodID init = env->GetMethodID(clzz, "<init>", "()V"); // 获取构造方法
     jfieldID name = env->GetFieldID(clzz, "name", "Ljava/lang/String;");
     jfieldID age = env->GetFieldID(clzz, "age", "I");
@@ -196,6 +196,11 @@ Java_com_ndk_jniproject_MainActivity_callStringArray(JNIEnv *env, jobject instan
 
 }
 
+
+
+
+
+
 void setCStudentData(CStudent *pStudent) {
     for (int i = 0; i < 10; ++i) {
         pStudent[i].name = "ksd";
@@ -203,10 +208,67 @@ void setCStudentData(CStudent *pStudent) {
     }
 }
 
+//public String code;
+//public byte unit;
+//public int[] ids;
+//public double changeNum;
+//public int open;
+//public long totle;
+//public boolean isDay;
+//传递一个复杂对象，并获取里面的数据，创建一个新的对象设置数据后并返回
 extern "C"
-JNIEXPORT void JNICALL
-Java_com_ndk_jniproject_MainActivity_test(JNIEnv *env, jobject instance) {
+JNIEXPORT jobject JNICALL
+Java_com_ndk_jniproject_MainActivity_callComplex(JNIEnv *env, jobject instance, jobject com) {
 
-    // TODO
+    // 当有object对象传入的时候可以用这个方法来获取，当没有的时候需要通过find查找
+    jclass clzz = env->GetObjectClass(com);
+
+    //获取对象中的属性
+    jfieldID code = env->GetFieldID(clzz,"code","Ljava/lang/String;");
+    jfieldID unit = env->GetFieldID(clzz,"unit","B");
+    jfieldID changeNum = env->GetFieldID(clzz,"changeNum","D");
+    jfieldID open = env->GetFieldID(clzz,"open","I");
+    jfieldID totle = env->GetFieldID(clzz,"totle","J");
+    jfieldID isDay = env->GetFieldID(clzz,"isDay","Z");
+
+    jfieldID ids  = env->GetFieldID(clzz,"ids","[I");
+
+    //获取属性中的值,获取后的数据，要转成native层识别的，参考上面
+    jstring vcode = (jstring) env->GetObjectField(com, code);
+    jint vopen = env->GetIntField(clzz,open);
+    jbyte vunit = env->GetByteField(com,unit);
+    jdouble vchangeNum = env->GetDoubleField(com,changeNum);
+    jlong  vtotle = env->GetLongField(com,totle);
+    jboolean visday = env->GetBooleanField(com,isDay);
+    jintArray vids= (jintArray) env->GetObjectField(com, ids);
+
+
+//    创建一个新的对象并返回,构造函数有复杂的参数
+//    String code, byte unit, int[] ids, double changeNum, int open, long totle, boolean isDay
+    jclass clzzs = env->FindClass("com/ndk/jniproject/bean/ComplexObject");
+    jmethodID init = env->GetMethodID(clzzs,"<init>","()V");
+    jobject obj = env->NewObject(clzzs,init);
+    //给属性设置数据
+
+    env->SetIntField(obj,open,1);
+    env->SetByteField(obj,unit,1);
+    env->SetBooleanField(obj,isDay, false);
+    env->SetLongField(obj,totle,23422);
+    env->SetDoubleField(obj,changeNum,23.23);
+    env->SetObjectField(obj,code,env->NewStringUTF("code"));
+
+    int parr []={12,1,1,2,2,2,22,22,2,8};
+    jintArray newarr =env->NewIntArray(10);
+    env->SetIntArrayRegion(newarr,0,10,parr);
+    env->SetObjectField(obj,ids,newarr);
+
+    //通过构造参数传值
+    jmethodID init = env->GetMethodID(clzzs,"<init>","(Ljava/langString;B[IDIJZ)V");
+
+    jobject newobj = env->NewObject(clzz,init,env->NewStringUTF("code"),0,newarr,32.23,12,323423, false);
+
+    return newobj;
+
+
 
 }

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
+import com.ndk.jniproject.bean.ComplexObject;
 import com.ndk.jniproject.bean.Student;
 
 public class MainActivity extends AppCompatActivity {
@@ -71,5 +72,5 @@ public class MainActivity extends AppCompatActivity {
     /**
      * 传入一个复杂的对象，并获取对象中的数据，然后再创建一个新的复杂对象，并返回
      */
-    public native void test();
+    public native ComplexObject callComplex(ComplexObject com);
 }
