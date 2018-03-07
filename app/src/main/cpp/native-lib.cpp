@@ -11,8 +11,8 @@ void setCStudentData(CStudent *pStudent);
 extern "C"
 JNIEXPORT jstring JNICALL
 Java_com_ndk_jniproject_MainActivity_callBaseData(JNIEnv *env, jobject instance,
-                                                          jstring str_,
-                                                          jint num) {
+                                                  jstring str_,
+                                                  jint num) {
 
     //传入的基本数据类型可以直接使用，因为jint 是在jni.h文件中定义好了的
     //而string类型在native层使用的时候需要转换车char* ，然后返回的时候要转成jstring类型
@@ -28,7 +28,7 @@ Java_com_ndk_jniproject_MainActivity_callBaseData(JNIEnv *env, jobject instance,
 extern "C"
 JNIEXPORT jintArray JNICALL
 Java_com_ndk_jniproject_MainActivity_callInteger(JNIEnv *env, jobject instance,
-                                                         jintArray arr_) {
+                                                 jintArray arr_) {
     //传入基本数据类型数组，获取设置传入数组中的数据，创建新数组返回
 
     // 获取到指针后通过循环能够获取里面的值
@@ -52,23 +52,23 @@ Java_com_ndk_jniproject_MainActivity_callInteger(JNIEnv *env, jobject instance,
     }
 
     //创建一个新的数组，设置数据，返回给java层
-    jintArray  newarr = env->NewIntArray(size);
-    env->SetIntArrayRegion(newarr,0,size,array);
+    jintArray newarr = env->NewIntArray(size);
+    env->SetIntArrayRegion(newarr, 0, size, array);
 //    return newarr;  数据设置完后就能直接返回给java层
 
 //    第三种方式数据传递 创建一块共享内存,注意传过来的是一个object对象
 //   java层代码： ByteBuffer byteBuffer = ByteBuffer.allocateDirect(100);
-    int * pbuf = (int *) env->GetDirectBufferAddress(instance);
-    if(pbuf==NULL){
+    int *pbuf = (int *) env->GetDirectBufferAddress(instance);
+    if (pbuf == NULL) {
         printf("GetDirectBufferAddress failed");
         return 0;
     }
-    for (int i = 0; i <size; i++) {
-        sum+= pbuf[i];
-        pbuf[i]=sum;
+    for (int i = 0; i < size; i++) {
+        sum += pbuf[i];
+        pbuf[i] = sum;
     }
 
-    return  newarr;
+    return newarr;
 }
 
 //传入对象数组数据，获取设置传入数组中的数据，创建新数组返回
@@ -76,50 +76,50 @@ Java_com_ndk_jniproject_MainActivity_callInteger(JNIEnv *env, jobject instance,
 extern "C"
 JNIEXPORT jobjectArray JNICALL
 Java_com_ndk_jniproject_MainActivity_callStudent(JNIEnv *env, jobject instance,
-                                                         jobjectArray students) {
+                                                 jobjectArray students) {
 
     //先获取到数组中的对象
-    jclass  clzz = env->FindClass("project/ndk/com/jniproject/Student");
-    jmethodID  init =env->GetMethodID(clzz,"<init>","()V"); // 获取构造方法
-    jfieldID  name=env->GetFieldID(clzz,"name","Ljava/lang/String;");
-    jfieldID age = env->GetFieldID(clzz,"age","I");
+    jclass clzz = env->FindClass("project/ndk/com/jniproject/Student");
+    jmethodID init = env->GetMethodID(clzz, "<init>", "()V"); // 获取构造方法
+    jfieldID name = env->GetFieldID(clzz, "name", "Ljava/lang/String;");
+    jfieldID age = env->GetFieldID(clzz, "age", "I");
 
     //获取数组中的数据
     jint size = env->GetArrayLength(students);
     for (int i = 0; i < size; ++i) {
         //获取数组中的元素，是一个student对象
-       jobject student =env->GetObjectArrayElement(students,i);
-        if(student==NULL){
+        jobject student = env->GetObjectArrayElement(students, i);
+        if (student == NULL) {
             printf("获取对象失败");
             return 0;
         }
         // 取出对象中的值，并重新赋值
         jstring pname = (jstring) env->GetObjectField(student, name);
-        jint page = env->GetIntField(student,age);
-        env->SetObjectField(student,name,pname);
-        env->SetIntField(student,age,page);
+        jint page = env->GetIntField(student, age);
+        env->SetObjectField(student, name, pname);
+        env->SetIntField(student, age, page);
     }
 
 
     //设置数据， 并返回数组，
     // 需要在native层中也有一个数据，
-    CStudent * cstu= (CStudent *) malloc(10 * sizeof(CStudent));
+    CStudent *cstu = (CStudent *) malloc(10 * sizeof(CStudent));
     //设置native数据
     setCStudentData(cstu);
 
     //创建对象数组
-    jobjectArray newarray = env->NewObjectArray(size,clzz,NULL);
+    jobjectArray newarray = env->NewObjectArray(size, clzz, NULL);
     for (int i = 0; i < 10; ++i) {
-        jobject  student = env->NewObject(clzz,init);//创建对象
+        jobject student = env->NewObject(clzz, init);//创建对象
         //获取i所对应的对象
-        CStudent* unit = (CStudent*)(&cstu[i]);
-        jstring  jname = env->NewStringUTF(unit->name);
-        env->SetObjectField(student,name,jname);
-        env->SetIntField(student,age,cstu[i].age);
+        CStudent *unit = (CStudent *) (&cstu[i]);
+        jstring jname = env->NewStringUTF(unit->name);
+        env->SetObjectField(student, name, jname);
+        env->SetIntField(student, age, cstu[i].age);
 
-        env->SetObjectArrayElement(students,i,student); //用传进来的数组设置数据
-        env->SetObjectArrayElement(newarray,i,student);// 重新创建了一个新的数组并设置数据。
-        (env)->DeleteLocalRef( student);//设置完数据后进行删除引用
+        env->SetObjectArrayElement(students, i, student); //用传进来的数组设置数据
+        env->SetObjectArrayElement(newarray, i, student);// 重新创建了一个新的数组并设置数据。
+        (env)->DeleteLocalRef(student);//设置完数据后进行删除引用
     }
     //垃圾回收
     free(cstu);
@@ -136,67 +136,70 @@ Java_com_ndk_jniproject_MainActivity_callStudent(JNIEnv *env, jobject instance,
 extern "C"
 JNIEXPORT jobjectArray JNICALL
 Java_com_ndk_jniproject_MainActivity_calldoubleArray(JNIEnv *env, jobject instance,
-                                                             jobjectArray arr) {
+                                                     jobjectArray arr) {
 
     //获取二维数组中数据,也可以设置数据
     for (int i = 0; i < 10; ++i) {
-        jintArray  array = (jintArray) env->GetObjectArrayElement(arr, i);
-        jint * pint = env->GetIntArrayElements(array, false);
+        jintArray array = (jintArray) env->GetObjectArrayElement(arr, i);
+        jint *pint = env->GetIntArrayElements(array, false);
         for (int x = 0; x < 10; ++x) {
-            pint[x]=12;
-            int num= pint[x];
+            pint[x] = 12;
+            int num = pint[x];
         }
     }
 
     //创建一个新的二维数组，然后并返回
-    jclass  clzz= env->FindClass("[I");
-    jobjectArray  result = env->NewObjectArray(10,clzz,NULL);
+    jclass clzz = env->FindClass("[I");
+    jobjectArray result = env->NewObjectArray(10, clzz, NULL);
     for (int i = 0; i < 10; ++i) {
-        jintArray iarr= env->NewIntArray(10);
-        int tmp [10];
+        jintArray iarr = env->NewIntArray(10);
+        int tmp[10];
         for (int x = 0; x < 10; ++x) {
-            tmp[i]=i+x;
+            tmp[i] = i + x;
         }
-        env->SetIntArrayRegion(iarr,0,10,tmp);
-        env->SetObjectArrayElement(result,i,iarr);
+        env->SetIntArrayRegion(iarr, 0, 10, tmp);
+        env->SetObjectArrayElement(result, i, iarr);
         env->DeleteLocalRef(iarr);
     }
     return result;
 }
 
+/**
+ * 传递一个字符串数组，获取里面的数据并设置数据
+ * 返回一个字符串数组
+ */
 extern "C"
 JNIEXPORT jobjectArray JNICALL
 Java_com_ndk_jniproject_MainActivity_callStringArray(JNIEnv *env, jobject instance,
-                                                             jobjectArray stu) {
+                                                     jobjectArray stu) {
 
-    jclass clzz =env->FindClass("Ljava/lang/String;");
-    env->NewObjectArray(10,clzz,NULL);
+    jclass clzz = env->FindClass("Ljava/lang/String;");
+    jint size = env->GetArrayLength(stu);
+    for (int i = 0; i < size; ++i) {
+        jstring str = (jstring) env->GetObjectArrayElement(stu, i);
 
+        //获取数据
+        const char *pcha = env->GetStringUTFChars(str, false);
+        //设置数据
+        env->SetObjectArrayElement(stu, i, env->NewStringUTF("abc"));
+    }
 
+    jobjectArray array = env->NewObjectArray(size, clzz, NULL);
+
+    for (int x = 0; x < size; ++x) {
+        jstring s = env->NewStringUTF("abc" + x);
+        env->SetObjectArrayElement(array, x, s);
+    }
+
+    env->DeleteLocalRef(clzz);
+    return array;
 
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 void setCStudentData(CStudent *pStudent) {
     for (int i = 0; i < 10; ++i) {
-        pStudent[i].name="ksd";
-        pStudent[i].age=12;
+        pStudent[i].name = "ksd";
+        pStudent[i].age = 12;
     }
 }
 
