@@ -44,8 +44,27 @@ public class MainActivity extends AppCompatActivity {
      */
     public native int []  callInteger(int [] arr);
 
+    /**
+     * 传入一个对象数组，获取里面的数据，创建一个新的对象数组，设置数据并返回
+     * @param students
+     * @return
+     */
     public native Student[] callStudent(Student [] students);
+
+    /**
+     * 传入一个二维数组，获取二维数组中的数据，并创建一个新的二维数组设置数据，并返回。
+     * @param arr
+     * @return
+     */
     public native int [][] calldoubleArray(int [][] arr);
+
+    /**
+     * 传入一个字符串数组，获取数组中的字符串，并创建一个新的字符串数组并设置数据，然后返回。
+     * @param stu
+     * @return
+     */
     public native String[] callStringArray(String [] stu);
+
+
     public native void test();
 }
