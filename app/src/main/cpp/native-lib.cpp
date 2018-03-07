@@ -263,7 +263,7 @@ Java_com_ndk_jniproject_MainActivity_callComplex(JNIEnv *env, jobject instance, 
     env->SetObjectField(obj,ids,newarr);
 
     //通过构造参数传值
-    jmethodID init = env->GetMethodID(clzzs,"<init>","(Ljava/langString;B[IDIJZ)V");
+    jmethodID inits = env->GetMethodID(clzzs,"<init>","(Ljava/langString;B[IDIJZ)V");
 
     jobject newobj = env->NewObject(clzz,init,env->NewStringUTF("code"),0,newarr,32.23,12,323423, false);
 
