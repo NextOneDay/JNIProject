@@ -86,7 +86,7 @@ Java_com_ndk_jniproject_MainActivity_callStudent(JNIEnv *env, jobject instance,
 
     //获取数组中的数据
     jint size = env->GetArrayLength(students);
-    for (int i = 0; i < size; ++i) {
+    for (int i = 0; i < size; i++) {
         //获取数组中的元素，是一个student对象
         jobject student = env->GetObjectArrayElement(students, i);
         if (student == NULL) {
@@ -103,13 +103,14 @@ Java_com_ndk_jniproject_MainActivity_callStudent(JNIEnv *env, jobject instance,
 
     //设置数据， 并返回数组，
     // 需要在native层中也有一个数据，
-    CStudent *cstu = (CStudent *) malloc(10 * sizeof(CStudent));
+    CStudent *cstu = (CStudent *) malloc(3 * sizeof(CStudent));
     //设置native数据
     setCStudentData(cstu);
 
     //创建对象数组
-    jobjectArray newarray = env->NewObjectArray(size, clzz, NULL);
-    for (int i = 0; i < 10; ++i) {
+    jobjectArray newarray = env->NewObjectArray(3, clzz, NULL);
+
+    for (int i = 0; i < 3; i++) {
         jobject student = env->NewObject(clzz, init);//创建对象
         //获取i所对应的对象
         CStudent *unit = (CStudent *) (&cstu[i]);
@@ -117,7 +118,7 @@ Java_com_ndk_jniproject_MainActivity_callStudent(JNIEnv *env, jobject instance,
         env->SetObjectField(student, name, jname);
         env->SetIntField(student, age, cstu[i].age);
 
-        env->SetObjectArrayElement(students, i, student); //用传进来的数组设置数据
+//        env->SetObjectArrayElement(students, i, student); //用传进来的数组设置数据
         env->SetObjectArrayElement(newarray, i, student);// 重新创建了一个新的数组并设置数据。
         (env)->DeleteLocalRef(student);//设置完数据后进行删除引用
     }
@@ -125,7 +126,7 @@ Java_com_ndk_jniproject_MainActivity_callStudent(JNIEnv *env, jobject instance,
     free(cstu);
     (env)->DeleteLocalRef(clzz);
     cstu = NULL;
-    return students;
+    return newarray;
 
 }
 
@@ -198,9 +199,10 @@ Java_com_ndk_jniproject_MainActivity_callStringArray(JNIEnv *env, jobject instan
 
 
 void setCStudentData(CStudent *pStudent) {
-    for (int i = 0; i < 10; ++i) {
-        pStudent[i].name = "ksd";
-        pStudent[i].age = 12;
+    for (int i = 0; i < 3; i++) {
+        pStudent[i].name = "ksd"+i;
+        pStudent[i].age = 12+i;
+        printf("name=%s,age=%d",pStudent[i].name ,pStudent[i].age);
     }
 }
 
@@ -338,11 +340,11 @@ Java_com_ndk_jniproject_MainActivity_callCompleList(JNIEnv *env, jobject instanc
 
     // 获取集合class类型，以及所需要用到的methodi，以及对象class 和fieldid
     jclass arraylist = env->FindClass("java/util/ArrayList");
-    jmethodID getListData = env->GetMethodID(arraylist, "get", "(I)com/ndk/jniproject/bean/ListData");
+    jmethodID getListData = env->GetMethodID(arraylist, "get", "(I)Ljava/lang/Object;");
     jmethodID size = env->GetMethodID(arraylist, "size", "()I");
-    jmethodID add = env->GetMethodID(arraylist, "add", "(com/ndk/jniproject/bean/ListData)Z");
+    jmethodID add = env->GetMethodID(arraylist, "add", "(Ljava/lang/Object;)Z");
 
-    jclass listdata = env->FindClass("com/ndk/jniproject/bean/ListData");
+    jclass listdata = env->FindClass("Lcom/ndk/jniproject/bean/ListData;");
     jfieldID code = env->GetFieldID(listdata, "code", "Ljava/lang/String;");
     jfieldID num = env->GetFieldID(listdata, "num", "I");
     jfieldID stulist = env->GetFieldID(listdata, "list", "java/util/ArrayList");

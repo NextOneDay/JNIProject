@@ -5,8 +5,8 @@ package com.ndk.jniproject.bean;
  */
 
 public  class Student {
-    String name;
-    int age;
+    public String name;
+    public int age;
 
     public String getName() {
         return name;

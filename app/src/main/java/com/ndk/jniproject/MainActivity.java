@@ -3,6 +3,7 @@ package com.ndk.jniproject;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.ndk.jniproject.bean.ComplexObject;
@@ -10,6 +11,7 @@ import com.ndk.jniproject.bean.ListData;
 import com.ndk.jniproject.bean.Student;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,6 +28,41 @@ public class MainActivity extends AppCompatActivity {
         // Example of a call to a native method
         TextView tv = (TextView) findViewById(R.id.sample_text);
 
+//        callCompleLIstInJava();
+        callStudentInJava();
+
+    }
+
+    private void callStudentInJava() {
+        Student sts = new Student();
+        sts.name="sts";
+        sts.age=1;
+        Student stu[] ={sts};
+        Student[] students = callStudent(stu);
+        Log.d("callStudentInJava:",Arrays.toString(students));
+    }
+
+    private void callCompleLIstInJava() {
+        ArrayList<ListData> al = new ArrayList<>();
+        for (int x =0; x<3; x++){
+            ListData data = new ListData();
+            data.code="code";
+            data.num=x;
+            ArrayList<Student> students= new ArrayList<>();
+            for (int y =0 ;y<3;y++){
+                Student stu = new Student();
+                stu.age=y+x;
+                stu.name="name"+y;
+                students.add(stu);
+            }
+            data.list=students;
+            al.add(data);
+
+
+        }
+
+        ArrayList<ListData> listData = callCompleList(al);
+        System.out.println(listData.toString());
     }
 
     /**

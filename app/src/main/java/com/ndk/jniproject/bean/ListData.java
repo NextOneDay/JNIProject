@@ -8,9 +8,9 @@ import java.util.ArrayList;
 
 public class ListData {
 
-    String code;
-    int num;
-    ArrayList<Student> list;
+    public String code;
+    public int num;
+    public ArrayList<Student> list;
 
     public ListData(String name, int num, ArrayList<Student> list) {
         this.code = name;
