@@ -197,10 +197,6 @@ Java_com_ndk_jniproject_MainActivity_callStringArray(JNIEnv *env, jobject instan
 }
 
 
-
-
-
-
 void setCStudentData(CStudent *pStudent) {
     for (int i = 0; i < 10; ++i) {
         pStudent[i].name = "ksd";
@@ -224,49 +220,50 @@ Java_com_ndk_jniproject_MainActivity_callComplex(JNIEnv *env, jobject instance, 
     jclass clzz = env->GetObjectClass(com);
 
     //获取对象中的属性
-    jfieldID code = env->GetFieldID(clzz,"code","Ljava/lang/String;");
-    jfieldID unit = env->GetFieldID(clzz,"unit","B");
-    jfieldID changeNum = env->GetFieldID(clzz,"changeNum","D");
-    jfieldID open = env->GetFieldID(clzz,"open","I");
-    jfieldID totle = env->GetFieldID(clzz,"totle","J");
-    jfieldID isDay = env->GetFieldID(clzz,"isDay","Z");
+    jfieldID code = env->GetFieldID(clzz, "code", "Ljava/lang/String;");
+    jfieldID unit = env->GetFieldID(clzz, "unit", "B");
+    jfieldID changeNum = env->GetFieldID(clzz, "changeNum", "D");
+    jfieldID open = env->GetFieldID(clzz, "open", "I");
+    jfieldID totle = env->GetFieldID(clzz, "totle", "J");
+    jfieldID isDay = env->GetFieldID(clzz, "isDay", "Z");
 
-    jfieldID ids  = env->GetFieldID(clzz,"ids","[I");
+    jfieldID ids = env->GetFieldID(clzz, "ids", "[I");
 
     //获取属性中的值,获取后的数据，要转成native层识别的，参考上面
     jstring vcode = (jstring) env->GetObjectField(com, code);
-    jint vopen = env->GetIntField(clzz,open);
-    jbyte vunit = env->GetByteField(com,unit);
-    jdouble vchangeNum = env->GetDoubleField(com,changeNum);
-    jlong  vtotle = env->GetLongField(com,totle);
-    jboolean visday = env->GetBooleanField(com,isDay);
-    jintArray vids= (jintArray) env->GetObjectField(com, ids);
+    jint vopen = env->GetIntField(clzz, open);
+    jbyte vunit = env->GetByteField(com, unit);
+    jdouble vchangeNum = env->GetDoubleField(com, changeNum);
+    jlong vtotle = env->GetLongField(com, totle);
+    jboolean visday = env->GetBooleanField(com, isDay);
+    jintArray vids = (jintArray) env->GetObjectField(com, ids);
 
 
 //    创建一个新的对象并返回,构造函数有复杂的参数
 //    String code, byte unit, int[] ids, double changeNum, int open, long totle, boolean isDay
     jclass clzzs = env->FindClass("com/ndk/jniproject/bean/ComplexObject");
-    jmethodID init = env->GetMethodID(clzzs,"<init>","()V");
-    jobject obj = env->NewObject(clzzs,init);
+    jmethodID init = env->GetMethodID(clzzs, "<init>", "()V");
+    jobject obj = env->NewObject(clzzs, init);
     //给属性设置数据
 
-    env->SetIntField(obj,open,1);
-    env->SetByteField(obj,unit,1);
-    env->SetBooleanField(obj,isDay, false);
-    env->SetLongField(obj,totle,23422);
-    env->SetDoubleField(obj,changeNum,23.23);
-    env->SetObjectField(obj,code,env->NewStringUTF("code"));
+    env->SetIntField(obj, open, 1);
+    env->SetByteField(obj, unit, 1);
+    env->SetBooleanField(obj, isDay, false);
+    env->SetLongField(obj, totle, 23422);
+    env->SetDoubleField(obj, changeNum, 23.23);
+    env->SetObjectField(obj, code, env->NewStringUTF("code"));
 
-    int parr []={12,1,1,2,2,2,22,22,2,8};
-    jintArray newarr =env->NewIntArray(10);
-    env->SetIntArrayRegion(newarr,0,10,parr);
-    env->SetObjectField(obj,ids,newarr);
+    int parr[] = {12, 1, 1, 2, 2, 2, 22, 22, 2, 8};
+    jintArray newarr = env->NewIntArray(10);
+    env->SetIntArrayRegion(newarr, 0, 10, parr);
+    env->SetObjectField(obj, ids, newarr);
 
     //通过构造参数传值
-    jmethodID inits = env->GetMethodID(clzzs,"<init>","(Ljava/langString;B[IDIJZ)V");
+    jmethodID inits = env->GetMethodID(clzzs, "<init>", "(Ljava/langString;B[IDIJZ)V");
 
     //将7个参数传入构造函数中，进行创建新的对象
-    jobject newobj = env->NewObject(clzz,inits,env->NewStringUTF("code"),0,newarr,32.23,12,323423, false);
+    jobject newobj = env->NewObject(clzz, inits, env->NewStringUTF("code"), 0, newarr, 32.23, 12,
+                                    323423, false);
     return newobj;
 
 }
@@ -284,41 +281,41 @@ extern "C"
 JNIEXPORT jobject JNICALL
 Java_com_ndk_jniproject_MainActivity_callList(JNIEnv *env, jobject instance, jobject al) {
     //获取集合中的数据
-    jclass  clzz = env->GetObjectClass(al);
-    jmethodID size = env->GetMethodID(clzz,"size","()I");
-    jint vsize = env->CallIntMethod(al,size);
+    jclass clzz = env->GetObjectClass(al);
+    jmethodID size = env->GetMethodID(clzz, "size", "()I");
+    jint vsize = env->CallIntMethod(al, size);
 
     //list的get方法需要传入index 然后返回泛型对象
-    jmethodID get= env->GetMethodID(clzz,"get","(I)Lcom/ndk/jniproject/beanStudent;");
+    jmethodID get = env->GetMethodID(clzz, "get", "(I)Lcom/ndk/jniproject/beanStudent;");
 
     //获取studnet中的属性值
     jclass stuclzz = env->FindClass("Lcom/ndk/jniproject/beanStudent");
-    jmethodID stuinit= env->GetMethodID(stuclzz,"<init>","()V");
-    jfieldID name = env->GetFieldID(stuclzz,"name","Ljava/lang/String");
-    jfieldID age = env->GetFieldID(stuclzz,"age","I");
+    jmethodID stuinit = env->GetMethodID(stuclzz, "<init>", "()V");
+    jfieldID name = env->GetFieldID(stuclzz, "name", "Ljava/lang/String");
+    jfieldID age = env->GetFieldID(stuclzz, "age", "I");
     for (int i = 0; i < vsize; ++i) {
         //进入循环中来获取对应的对象
-        jobject student =env->CallObjectMethod(al,get,i);
+        jobject student = env->CallObjectMethod(al, get, i);
 
         //通过对象来获取值
-        jint vage = env->GetIntField(student,age);
-        jstring vname= (jstring) env->GetObjectField(student, name);
+        jint vage = env->GetIntField(student, age);
+        jstring vname = (jstring) env->GetObjectField(student, name);
     }
 
     // 创建一个新的对象并设置数据返回
 
     //根据class 来创建arraylist集合
 //    jclass  arraylist = env->FindClass("Ljava/util/ArrayList;");
-    jmethodID init =env->GetMethodID(clzz,"<init>","()V");
-    jmethodID add= env->GetMethodID(clzz,"add","(com/ndk/jniproject/bean/Student)Z");
-    jobject arrayList= env->NewObject(clzz,init);
+    jmethodID init = env->GetMethodID(clzz, "<init>", "()V");
+    jmethodID add = env->GetMethodID(clzz, "add", "(com/ndk/jniproject/bean/Student)Z");
+    jobject arrayList = env->NewObject(clzz, init);
 
     //循环添加数据
     for (int x = 0; x < 10; ++x) {
-        jobject student= env->NewObject(stuclzz,stuinit);
-        env->SetIntField(student,age,20);
-        env->SetObjectField(student,name,env->NewStringUTF("skldf"));
-        env->CallObjectMethod(clzz,add,student);
+        jobject student = env->NewObject(stuclzz, stuinit);
+        env->SetIntField(student, age, 20);
+        env->SetObjectField(student, name, env->NewStringUTF("skldf"));
+        env->CallObjectMethod(clzz, add, student);
     }
 
     return arrayList;
@@ -326,11 +323,76 @@ Java_com_ndk_jniproject_MainActivity_callList(JNIEnv *env, jobject instance, job
 }
 
 //传递一个嵌套集合对象，集合中的对象中包含着集合，
+/**
+ * 大概思路：
+ *  1.获取集合的class类型， 获取get、size、add等方法的methodid
+ *  2，进行循环遍历获取集合中的元素，
+ *  3.获取元素对象中属性fieldid ,并获取属性中的集合对象
+ *  4.并重新进行循环，获取这个集合中的对象，并获取对象中的值
+ *
+ *
+ */
 extern "C"
 JNIEXPORT jobject JNICALL
 Java_com_ndk_jniproject_MainActivity_callCompleList(JNIEnv *env, jobject instance, jobject list) {
 
+    // 获取集合class类型，以及所需要用到的methodi，以及对象class 和fieldid
+    jclass arraylist = env->FindClass("java/util/ArrayList");
+    jmethodID getListData = env->GetMethodID(arraylist, "get", "(I)com/ndk/jniproject/bean/ListData");
+    jmethodID size = env->GetMethodID(arraylist, "size", "()I");
+    jmethodID add = env->GetMethodID(arraylist, "add", "(com/ndk/jniproject/bean/ListData)Z");
 
+    jclass listdata = env->FindClass("com/ndk/jniproject/bean/ListData");
+    jfieldID code = env->GetFieldID(listdata, "code", "Ljava/lang/String;");
+    jfieldID num = env->GetFieldID(listdata, "num", "I");
+    jfieldID stulist = env->GetFieldID(listdata, "list", "java/util/ArrayList");
 
+    jclass student = env->FindClass("com/ndk/jniproject/bean/Student");
+    jfieldID name = env->GetFieldID(student, "name", "Ljava/lang/String;");
+    jfieldID age = env->GetFieldID(student, "age", "I");
+
+    jmethodID studentget = env->GetMethodID(arraylist, "get", "(I)com/ndk/jniproject/bean/Student");
+    jmethodID studentadd = env->GetMethodID(arraylist, "add", "(com/ndk/jniproject/bean/Student)Z");
+    //进行循环获取集合汇总的元素
+    jint vsize = env->CallIntMethod(list, size);
+    for (int i = 0; i < vsize; ++i) {
+        jobject vlistData = env->CallObjectMethod(list, getListData, i);
+        jint vnum = env->GetIntField(vlistData, num);
+        jstring vcode = (jstring) env->GetObjectField(vlistData, code);
+        jobject vlist = env->GetObjectField(vlistData, stulist);
+
+        jint vsize = env->CallIntMethod(vlist, size);
+        for (int x = 0; x < vsize; ++x) {
+            jobject vstudent = env->CallObjectMethod(vlist, studentget, x);
+            jint vage =env->GetIntField(vstudent,age);
+            jstring vname = (jstring) env->GetObjectField(vstudent, name);
+
+        }
+    }
+
+    //重新创建一个新的的arrayList 集合进行存放数据 需要创建四个对象
+    jmethodID init = env->GetMethodID(arraylist,"<init>","()V");
+    jmethodID listinit =env->GetMethodID(listdata,"<init>","()V");
+    jmethodID studentinit = env->GetMethodID(student,"<init>","()V");
+    jobject newArrayList = env->NewObject(arraylist,init);
+    for (int i = 0; i < 3; i++) {
+        jobject newlistdata = env->NewObject(listdata,listinit);
+
+        env->SetIntField(newlistdata,num,1);
+        env->SetObjectField(newlistdata,code,env->NewStringUTF("code"));
+
+        jobject studentlist = env->NewObject(arraylist,init);
+        for (int i = 0; i < 3; ++i) {
+            jobject studentobj = env->NewObject(student,studentinit);
+            env->SetObjectField(studentobj,name,env->NewStringUTF("name"));
+            env->SetIntField(studentobj,age,12);
+            env->CallObjectMethod(studentlist,studentadd,studentobj);
+        }
+        env->SetObjectField(newlistdata,stulist,studentlist);
+
+        env->CallObjectMethod(newArrayList,add,newlistdata);
+    }
+
+    return newArrayList;
 
 }

@@ -8,12 +8,12 @@ import java.util.ArrayList;
 
 public class ListData {
 
-    String name;
+    String code;
     int num;
     ArrayList<Student> list;
 
     public ListData(String name, int num, ArrayList<Student> list) {
-        this.name = name;
+        this.code = name;
         this.num = num;
         this.list = list;
     }
@@ -24,7 +24,7 @@ public class ListData {
     @Override
     public String toString() {
         return "ListData{" +
-                "name='" + name + '\'' +
+                "name='" + code + '\'' +
                 ", num=" + num +
                 ", list=" + list +
                 '}';
