@@ -28,12 +28,24 @@ public class MainActivity extends AppCompatActivity {
         // Example of a call to a native method
         TextView tv = (TextView) findViewById(R.id.sample_text);
 
-//        callCompleLIstInJava();
+        callCompleLIstInJava();
 //        callStudentInJava();
 //        calldoubleArrayInJava();
 //        callStringArrayInJava();
 
-        callComplexInJava();
+//        callComplexInJava();
+//        callListInJava();
+    }
+
+    private void callListInJava() {
+        ArrayList<Student> al= new ArrayList<>();
+        Student student= new Student();
+        student.age=23;
+        student.name="Sjd";
+        al.add(student);
+        ArrayList<Student> students = callList(al);
+        Log.d("callListInJava:",students.toString());
+
     }
 
     private void callComplexInJava() {
@@ -88,12 +100,10 @@ public class MainActivity extends AppCompatActivity {
             }
             data.list=students;
             al.add(data);
-
-
         }
 
         ArrayList<ListData> listData = callCompleList(al);
-        System.out.println(listData.toString());
+        Log.d("callCompleListInJava:",listData.toString());
     }
 
     /**

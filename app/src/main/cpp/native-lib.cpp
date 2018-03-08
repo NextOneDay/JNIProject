@@ -294,12 +294,12 @@ Java_com_ndk_jniproject_MainActivity_callList(JNIEnv *env, jobject instance, job
     jint vsize = env->CallIntMethod(al, size);
 
     //list的get方法需要传入index 然后返回泛型对象
-    jmethodID get = env->GetMethodID(clzz, "get", "(I)Lcom/ndk/jniproject/beanStudent;");
+    jmethodID get = env->GetMethodID(clzz, "get", "(I)Ljava/lang/Object;");
 
     //获取studnet中的属性值
-    jclass stuclzz = env->FindClass("Lcom/ndk/jniproject/beanStudent");
+    jclass stuclzz = env->FindClass("com/ndk/jniproject/bean/Student");
     jmethodID stuinit = env->GetMethodID(stuclzz, "<init>", "()V");
-    jfieldID name = env->GetFieldID(stuclzz, "name", "Ljava/lang/String");
+    jfieldID name = env->GetFieldID(stuclzz, "name", "Ljava/lang/String;");
     jfieldID age = env->GetFieldID(stuclzz, "age", "I");
     for (int i = 0; i < vsize; ++i) {
         //进入循环中来获取对应的对象
@@ -315,15 +315,16 @@ Java_com_ndk_jniproject_MainActivity_callList(JNIEnv *env, jobject instance, job
     //根据class 来创建arraylist集合
 //    jclass  arraylist = env->FindClass("Ljava/util/ArrayList;");
     jmethodID init = env->GetMethodID(clzz, "<init>", "()V");
-    jmethodID add = env->GetMethodID(clzz, "add", "(com/ndk/jniproject/bean/Student)Z");
+    jmethodID add = env->GetMethodID(clzz, "add", "(Ljava/lang/Object;)Z");
     jobject arrayList = env->NewObject(clzz, init);
 
     //循环添加数据
-    for (int x = 0; x < 10; ++x) {
+    for (int x = 0; x < 3; ++x) {
         jobject student = env->NewObject(stuclzz, stuinit);
         env->SetIntField(student, age, 20);
         env->SetObjectField(student, name, env->NewStringUTF("skldf"));
-        env->CallObjectMethod(clzz, add, student);
+        env->CallBooleanMethod(arrayList, add, student);
+        env->DeleteLocalRef(student);
     }
 
     return arrayList;
@@ -350,7 +351,7 @@ Java_com_ndk_jniproject_MainActivity_callCompleList(JNIEnv *env, jobject instanc
     jmethodID size = env->GetMethodID(arraylist, "size", "()I");
     jmethodID add = env->GetMethodID(arraylist, "add", "(Ljava/lang/Object;)Z");
 
-    jclass listdata = env->FindClass("Lcom/ndk/jniproject/bean/ListData;");
+    jclass listdata = env->FindClass("com/ndk/jniproject/bean/ListData");
     jfieldID code = env->GetFieldID(listdata, "code", "Ljava/lang/String;");
     jfieldID num = env->GetFieldID(listdata, "num", "I");
     jfieldID stulist = env->GetFieldID(listdata, "list", "java/util/ArrayList");
@@ -359,8 +360,8 @@ Java_com_ndk_jniproject_MainActivity_callCompleList(JNIEnv *env, jobject instanc
     jfieldID name = env->GetFieldID(student, "name", "Ljava/lang/String;");
     jfieldID age = env->GetFieldID(student, "age", "I");
 
-    jmethodID studentget = env->GetMethodID(arraylist, "get", "(I)com/ndk/jniproject/bean/Student");
-    jmethodID studentadd = env->GetMethodID(arraylist, "add", "(com/ndk/jniproject/bean/Student)Z");
+    jmethodID studentget = env->GetMethodID(arraylist, "get", "(I)Ljava/lang/Object;");
+    jmethodID studentadd = env->GetMethodID(arraylist, "add", "(Ljava/lang/Object;)Z");
     //进行循环获取集合汇总的元素
     jint vsize = env->CallIntMethod(list, size);
     for (int i = 0; i < vsize; ++i) {
@@ -394,11 +395,12 @@ Java_com_ndk_jniproject_MainActivity_callCompleList(JNIEnv *env, jobject instanc
             jobject studentobj = env->NewObject(student,studentinit);
             env->SetObjectField(studentobj,name,env->NewStringUTF("name"));
             env->SetIntField(studentobj,age,12);
-            env->CallObjectMethod(studentlist,studentadd,studentobj);
+            env->CallBooleanMethod(studentlist,studentadd,studentobj);
         }
         env->SetObjectField(newlistdata,stulist,studentlist);
 
-        env->CallObjectMethod(newArrayList,add,newlistdata);
+        env->CallBooleanMethod(newArrayList,add,newlistdata);
+
     }
 
     return newArrayList;
