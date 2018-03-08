@@ -140,10 +140,12 @@ Java_com_ndk_jniproject_MainActivity_calldoubleArray(JNIEnv *env, jobject instan
                                                      jobjectArray arr) {
 
     //获取二维数组中数据,也可以设置数据
-    for (int i = 0; i < 10; ++i) {
+    jint size = env->GetArrayLength(arr);
+    for (int i = 0; i < size; i++) {
         jintArray array = (jintArray) env->GetObjectArrayElement(arr, i);
+        jint arraysize = env->GetArrayLength(array);
         jint *pint = env->GetIntArrayElements(array, false);
-        for (int x = 0; x < 10; ++x) {
+        for (int x = 0; x < arraysize; ++x) {
             pint[x] = 12;
             int num = pint[x];
         }
@@ -151,12 +153,12 @@ Java_com_ndk_jniproject_MainActivity_calldoubleArray(JNIEnv *env, jobject instan
 
     //创建一个新的二维数组，然后并返回
     jclass clzz = env->FindClass("[I");
-    jobjectArray result = env->NewObjectArray(10, clzz, NULL);
-    for (int i = 0; i < 10; ++i) {
+    jobjectArray result = env->NewObjectArray(size, clzz, NULL);
+    for (int i = 0; i < size; i++) {
         jintArray iarr = env->NewIntArray(10);
         int tmp[10];
         for (int x = 0; x < 10; ++x) {
-            tmp[i] = i + x;
+            tmp[i] = x;
         }
         env->SetIntArrayRegion(iarr, 0, 10, tmp);
         env->SetObjectArrayElement(result, i, iarr);
@@ -174,7 +176,7 @@ JNIEXPORT jobjectArray JNICALL
 Java_com_ndk_jniproject_MainActivity_callStringArray(JNIEnv *env, jobject instance,
                                                      jobjectArray stu) {
 
-    jclass clzz = env->FindClass("Ljava/lang/String;");
+    jclass clzz = env->FindClass("java/lang/String");
     jint size = env->GetArrayLength(stu);
     for (int i = 0; i < size; ++i) {
         jstring str = (jstring) env->GetObjectArrayElement(stu, i);
@@ -233,7 +235,7 @@ Java_com_ndk_jniproject_MainActivity_callComplex(JNIEnv *env, jobject instance, 
 
     //获取属性中的值,获取后的数据，要转成native层识别的，参考上面
     jstring vcode = (jstring) env->GetObjectField(com, code);
-    jint vopen = env->GetIntField(clzz, open);
+    jint vopen = env->GetIntField(com, open);
     jbyte vunit = env->GetByteField(com, unit);
     jdouble vchangeNum = env->GetDoubleField(com, changeNum);
     jlong vtotle = env->GetLongField(com, totle);
@@ -242,7 +244,6 @@ Java_com_ndk_jniproject_MainActivity_callComplex(JNIEnv *env, jobject instance, 
 
 
 //    创建一个新的对象并返回,构造函数有复杂的参数
-//    String code, byte unit, int[] ids, double changeNum, int open, long totle, boolean isDay
     jclass clzzs = env->FindClass("com/ndk/jniproject/bean/ComplexObject");
     jmethodID init = env->GetMethodID(clzzs, "<init>", "()V");
     jobject obj = env->NewObject(clzzs, init);
@@ -261,11 +262,16 @@ Java_com_ndk_jniproject_MainActivity_callComplex(JNIEnv *env, jobject instance, 
     env->SetObjectField(obj, ids, newarr);
 
     //通过构造参数传值
-    jmethodID inits = env->GetMethodID(clzzs, "<init>", "(Ljava/langString;B[IDIJZ)V");
+    //    String code, byte unit, int[] ids, double changeNum, int open, long totle, boolean isDay
+    jmethodID inits = env->GetMethodID(clzzs, "<init>", "(Ljava/lang/String;B[IDIJZ)V");
 
     //将7个参数传入构造函数中，进行创建新的对象
-    jobject newobj = env->NewObject(clzz, inits, env->NewStringUTF("code"), 0, newarr, 32.23, 12,
-                                    323423, false);
+    jbyte b=0;
+    jdouble d=32.32;
+    jlong l= 234223;
+    jboolean blean= false;
+    jobject newobj = env->NewObject(clzz, inits, env->NewStringUTF("code"),b , newarr, d, 12,
+                                    l, blean);
     return newobj;
 
 }

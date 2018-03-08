@@ -29,8 +29,39 @@ public class MainActivity extends AppCompatActivity {
         TextView tv = (TextView) findViewById(R.id.sample_text);
 
 //        callCompleLIstInJava();
-        callStudentInJava();
+//        callStudentInJava();
+//        calldoubleArrayInJava();
+//        callStringArrayInJava();
 
+        callComplexInJava();
+    }
+
+    private void callComplexInJava() {
+        ComplexObject com = new ComplexObject();
+        com.changeNum=22.33;
+        com.code="code";
+        com.ids=new int[]{2,2,32,3,23};
+        com.isDay=true;
+        com.open=23;
+        com.totle=32423423;
+        com.unit=0;
+        ComplexObject complexObject = callComplex(com);
+        Log.d("callComplexInJava:",complexObject.toString());
+
+    }
+
+    private void callStringArrayInJava() {
+        String str [] ={"uj","cx","fe","acd"};
+        String[] strings = callStringArray(str);
+        Log.d("callStringArrayInJava:",Arrays.toString(strings));
+    }
+
+    private void calldoubleArrayInJava() {
+        int arr[] = {23,12,23,54,22,3};
+        int doublearr[][]={arr};
+
+        int[][] ints = calldoubleArray(doublearr);
+        Log.d("calldoubleArrayInJava:",Arrays.toString(ints[0]));
     }
 
     private void callStudentInJava() {
