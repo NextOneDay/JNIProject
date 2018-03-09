@@ -171,4 +171,12 @@ public class MainActivity extends AppCompatActivity {
 
     public native  ArrayList<ListData> callCompleList(ArrayList<ListData> list);
 
+
+    /**
+     *  单纯的从native层调用的方法
+     */
+    public void callForNative(Student student){
+
+        Log.d("callForNative:",student.toString());
+    }
 }

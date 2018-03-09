@@ -1,0 +1,10 @@
+//
+// Created by Administrator on 2018/3/9.
+//
+
+#ifndef JNIPROJECT_JNILOADMANAGER_H
+#define JNIPROJECT_JNILOADMANAGER_H
+
+
+
+#endif //JNIPROJECT_JNILOADMANAGER_H

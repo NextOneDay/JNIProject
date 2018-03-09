@@ -6,7 +6,7 @@
 /**
  *  这里的方法只是用来表示一些方法的使用和数据的操作，这些操作并没有实际的应用意义。
  */
-void setCStudentData(CStudent *pStudent);
+
 
 extern "C"
 JNIEXPORT jstring JNICALL
@@ -200,13 +200,7 @@ Java_com_ndk_jniproject_MainActivity_callStringArray(JNIEnv *env, jobject instan
 }
 
 
-void setCStudentData(CStudent *pStudent) {
-    for (int i = 0; i < 3; i++) {
-        pStudent[i].name = "ksd"+i;
-        pStudent[i].age = 12+i;
-        printf("name=%s,age=%d",pStudent[i].name ,pStudent[i].age);
-    }
-}
+
 
 //public String code;
 //public byte unit;
@@ -341,6 +335,8 @@ Java_com_ndk_jniproject_MainActivity_callList(JNIEnv *env, jobject instance, job
  *
  *
  */
+static JavaVM *jvm;
+static jobject instan;
 extern "C"
 JNIEXPORT jobject JNICALL
 Java_com_ndk_jniproject_MainActivity_callCompleList(JNIEnv *env, jobject instance, jobject list) {
@@ -403,6 +399,46 @@ Java_com_ndk_jniproject_MainActivity_callCompleList(JNIEnv *env, jobject instanc
 
     }
 
+    //获取jvm
+
+    env->GetJavaVM(&jvm);
+    instan = env->NewGlobalRef(instance);
+    callJavaMethod();
     return newArrayList;
+
+}
+
+
+
+void setCStudentData(CStudent *pStudent) {
+    for (int i = 0; i < 3; i++) {
+        pStudent[i].name = "ksd"+i;
+        pStudent[i].age = 12+i;
+        printf("name=%s,age=%d",pStudent[i].name ,pStudent[i].age);
+    }
+}
+
+/**
+ * 这个是直接从native层来直接调用java层的方法，而不是通过java层->native层->java层这个方式
+ * 直接是native层->java层。
+ * 这里就有一个问题，就是没有了env 这个对象，所以需要通过其他方法来获取。
+ * 剩下的就是一样了
+ */
+void callJavaMethod(){
+
+    JNIEnv * env;
+    jvm->GetEnv((void **)&env,JNI_VERSION_1_6);
+    jclass  main= env->FindClass("com/ndk/jniprojectMainActivity");
+    jmethodID call = env->GetMethodID(main,"callForNative","(Lcom/ndk/jniproject/bean/Student;)V");
+    jclass student =env->FindClass("com/ndk/jniproject/bean/Student");
+    jmethodID init =env->GetMethodID(student,"<init>","()V");
+    jobject vstudent = env->NewObject(student,init);
+    jfieldID name=env->GetFieldID(student,"name","Ljava/lang/String;");
+    jfieldID age = env->GetFieldID(student,"age","I");
+    env->SetIntField(vstudent,age,12);
+    env->SetObjectField(vstudent,name,env->NewStringUTF("sldkf"));
+
+    env->CallVoidMethod(instan,call,vstudent);
+
 
 }

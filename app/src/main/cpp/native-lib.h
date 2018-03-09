@@ -13,4 +13,5 @@ typedef struct _Student{
 }CStudent;
 
 void setCStudentData(CStudent *pStudent) ;
+void callJavaMethod();
 #endif //JNIPROJECT_NATIVE_LIB_H
