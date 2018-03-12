@@ -9,6 +9,14 @@
     以及NDK库中提供的API(八)。
 
 ### 一、NDK简介
+    NDK:(本地开发工具集)是google 提供给开发者用来开发的一套工具，包括编译、集成打包，提供一套完整的库等
+    JNI:(Java 本地接口)是用来实现Java和Native层之间相互调用的桥梁
+    ndk-build:ndk-build脚本用于在NDK中心启动构建脚本
+    共享库(so库):将native代码编译成so库
+    ABI:不同的cpu有不同的架构，所编译出来的so库也要对应不同的CPU架构指令集
+    Android.mk: 用来定义引导ndk-build来编译的步骤、模块、名称等
+    Application.mk:描述应用需要的模块，如对应的ABI,工具链等
+    Cmake文件:在使用cmake工具来编译时使用到的编译文件
     
 ### 二、构建项目
     ** 三种集成构建jni的方式 ** 
@@ -17,7 +25,6 @@
         cmake自动编译
 ### 三、native方法声明创建
 ##### 三种方法签名生成方式
-   
         javah生成方法签名
         采用android studio 自动创建方法签名
         采用JNI_Load 方式创建方法签名
