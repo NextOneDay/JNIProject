@@ -20,17 +20,19 @@
     
 ### 二、构建项目
     ** 三种集成构建jni的方式 ** 
-        ndk自动编译
-        ndk手动编译
-        cmake自动编译
+        ndk自动编译:通过在build.gradle文件中加入一些配置来调用android.mk文件进行编译so库
+        ndk手动编译：通过命令行进入存放android.mk文件目录下，使用ndk-build命令进行手动编译，生成so库
+        cmake自动编译：在android studio创建新项目的时候进行勾选c++依赖 ，能够自动配置好环境。
 ### 三、native方法声明创建
-##### 三种方法签名生成方式
-        javah生成方法签名
-        采用android studio 自动创建方法签名
-        采用JNI_Load 方式创建方法签名
+    ** 三种方法签名生成方式 **
+        javah生成方法签名：对带有native方法的类，进行编译获取class文件，使用javah命令对class文件进行获取对应的头文件，头文件中就是对应的native方法名
+        采用android studio 自动创建方法签名:必须使用自动编译方式才能够有使用android studio 的自动提示功能进行创建native方法名
+        采用JNI_Load 方式创建方法签名:通过jni提供的方法对native方法进行动态的注册，
 ##### JNI_OnLoad方式实现native方法声明。     
    
 ### 四、JNI接口学习
+    通过jni.h文件，了解jni的对java的基本数据类型、对象数据类型 ，以及数据类型的签名的规则了解，以及提供了
+    进行相互调用、相互转化的方法学习。
 
 ### 五、Java层与native层数据类型转换以及互调方法
         基本数据类型、String类型
@@ -40,11 +42,17 @@
         集合嵌套数据类型
 ##### native层直接调用java层获取Env 
    
-### 六、调试与排错
+### 六、调试与排错：
+        通过android studio能够很方便的对jni、native层代码进行断点调试，日志输出等，以及进行常见错误的排查
    
-### 七、JNI技巧学习
-   
+### 七、JNI技巧
+        如果要深入了解，编写更好的jni代码，就需要对jni有更深入的了解
 ### 八、NDK学习
-        
-  
+        想要更深入学习，还可以学习NDK中为我们提供的一些对底层操作的API
+        NDK中的重要组成部分就是APIS ,它由四个部分组成，分别是神经网络系统、语音、视频和图像、绘图软件组成。
+        在有支持的设备上NN API 为TensorFlow Lite 和其他机器学习框架，提供了硬件加速功能。NN API 提供了大概三十个神经网络的运算单元，可以满足大多数机器学习系统的需求，
+        语音方面是Oboe ,Oboe是谷歌开源软件，封装了NDK中的AAudio 和OpenSL ES
+        在视频方面的是Camera2 API ,它可以使C/C++ 的程序直接控制摄像头，借助于NDK中HardwareBuffer ,从摄像头中进来的图像，可以直接与图形软件共享。省去了中间复制的环节。
+        在图形处理方面，主要有两个新的功能，一个是Vulkan ，一个是宽色域。Vulkan是新一代跨平台的图形API ,在能支持的设备上，vulkan应用软件直接控制GPU。能够并行处理。8.0引进了宽色域运行模式。 
+        NDK编译工具提供了编译器比如Clang/LLVM ,no more GCC Unified headers ,还提供了可独立使用工具，如Simpleperf、ndk-build、 shader compilers.
     
