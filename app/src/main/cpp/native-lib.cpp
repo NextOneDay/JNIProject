@@ -428,7 +428,7 @@ void callJavaMethod(){
 
     JNIEnv * env;
     jvm->GetEnv((void **)&env,JNI_VERSION_1_6);
-    jclass  main= env->FindClass("com/ndk/jniprojectMainActivity");
+    jclass  main= env->FindClass("com/ndk/jniproject/MainActivity");
     jmethodID call = env->GetMethodID(main,"callForNative","(Lcom/ndk/jniproject/bean/Student;)V");
     jclass student =env->FindClass("com/ndk/jniproject/bean/Student");
     jmethodID init =env->GetMethodID(student,"<init>","()V");
@@ -439,6 +439,6 @@ void callJavaMethod(){
     env->SetObjectField(vstudent,name,env->NewStringUTF("sldkf"));
 
     env->CallVoidMethod(instan,call,vstudent);
-
+    env->DeleteLocalRef(student);
 
 }
