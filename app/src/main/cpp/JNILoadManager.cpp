@@ -53,8 +53,17 @@ JNIEXPORT static int  registerNatives(JNIEnv *env) {
 
 
 // 首先通过jvm 来获取env，判断本地方法是否注册成功，最后返回要使用的jni版本
-jint JNI_OnLoad(JavaVM *vm, void *reserved) {
 
+/**
+ * 这里有个重要的点就是JNIEnv 和JavaVM 的获取,
+ * 在这里能够获取到vm，通过vm来获取env，然后保存为static成员
+ * 通过调用crateJavaVM() 来获取jvm，这个一般是不允许的
+ * 获取通过在有env的地方来通过env->getJavaVM()获取
+ * @param vm
+ * @param reserved
+ * @return
+ */
+jint JNI_OnLoad(JavaVM *vm, void *reserved) {
 
     JNIEnv *env = NULL;
     jint result = -1;
