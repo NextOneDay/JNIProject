@@ -20,9 +20,9 @@
     
 ### 二、构建项目
     ** 三种集成构建jni的方式 ** 
-        ndk自动编译:通过在build.gradle文件中加入一些配置来调用android.mk文件进行编译so库
-        ndk手动编译：通过命令行进入存放android.mk文件目录下，使用ndk-build命令进行手动编译，生成so库
-        cmake自动编译：在android studio创建新项目的时候进行勾选c++依赖 ，能够自动配置好环境。
+        ndkbuild模块使用：ndk自动编译:通过在build.gradle文件中加入一些配置来调用android.mk文件进行编译so库
+        ndkpro模块使用 ndk手动编译：通过命令行进入存放android.mk文件目录下，使用ndk-build命令进行手动编译，生成so库
+        默认app模块使用cmake自动编译：在android studio创建新项目的时候进行勾选c++依赖 ，能够自动配置好环境。
 ### 三、native方法声明创建
     ** 三种方法签名生成方式 **
         javah生成方法签名：对带有native方法的类，进行编译获取class文件，使用javah命令对class文件进行获取对应的头文件，头文件中就是对应的native方法名

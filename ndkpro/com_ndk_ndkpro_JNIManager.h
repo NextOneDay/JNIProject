@@ -10,9 +10,9 @@ extern "C" {
 /*
  * Class:     com_ndk_ndkpro_JNIManager
  * Method:    callNativeMethod
- * Signature: ()V
+ * Signature: ()Ljava/lang/String;
  */
-JNIEXPORT void JNICALL Java_com_ndk_ndkpro_JNIManager_callNativeMethod
+JNIEXPORT jstring JNICALL Java_com_ndk_ndkpro_JNIManager_callNativeMethod
   (JNIEnv *, jclass);
 
 #ifdef __cplusplus

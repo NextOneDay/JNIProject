@@ -5,5 +5,5 @@ package com.ndk.ndkpro;
  */
 
 public class JNIManager {
-    public  static native  void callNativeMethod();
+    public  static native  String callNativeMethod();
 }
