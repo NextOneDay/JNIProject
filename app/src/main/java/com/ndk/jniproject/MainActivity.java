@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
         System.loadLibrary("native-lib");
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
 //        callComplexInJava();
 //        callListInJava();
+        CallJNIMethodManager.callNativeMethod(); // 这个是通过JNI_OnLoad加载调用的，
     }
 
     private void callListInJava() {
