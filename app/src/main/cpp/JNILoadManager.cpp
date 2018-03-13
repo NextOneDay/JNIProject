@@ -16,7 +16,9 @@
 
 
 //最后调到这个方法输出打印
-JNIEXPORT void native_callNativeMethod(JNIEnv *env,jobject obj){
+void getJNIEnv(JavaVM *pVM);
+
+JNIEXPORT void native_callNativeMethod(JNIEnv *env, jobject obj){
 
     LOGD("native_callNativeMethod");
 
@@ -54,16 +56,9 @@ JNIEXPORT static int  registerNatives(JNIEnv *env) {
 
 // 首先通过jvm 来获取env，判断本地方法是否注册成功，最后返回要使用的jni版本
 
-/**
- * 这里有个重要的点就是JNIEnv 和JavaVM 的获取,
- * 在这里能够获取到vm，通过vm来获取env，然后保存为static成员
- * 通过调用crateJavaVM() 来获取jvm，这个一般是不允许的
- * 获取通过在有env的地方来通过env->getJavaVM()获取
- * @param vm
- * @param reserved
- * @return
- */
 jint JNI_OnLoad(JavaVM *vm, void *reserved) {
+
+    getJNIEnv(vm);
 
     JNIEnv *env = NULL;
     jint result = -1;
@@ -80,6 +75,26 @@ jint JNI_OnLoad(JavaVM *vm, void *reserved) {
     return result;
 
 
+}
+
+/**
+ * 这里有个重要的点就是JNIEnv 和JavaVM 的获取,
+ * 在这里能够获取到vm，通过vm来获取env，然后保存为static成员
+ * 第二种通过调用crateJavaVM() 来获取jvm，这个一般是不允许的
+ * 第三种获取通过在有env的地方来通过env->getJavaVM()获取
+ *
+ */
+ static JNIEnv *env;
+void getJNIEnv(JavaVM *pVM) {
+
+    jint status= pVM->GetEnv((void**)&env,JNI_VERSION_1_6);
+    if(status<0){
+        printf("callback failed to GetEnv");
+        status = pVM->AttachCurrentThread(&env, NULL);
+        if(status<0){
+            env = NULL;
+        }
+    }
 }
 
 

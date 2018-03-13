@@ -399,8 +399,7 @@ Java_com_ndk_jniproject_MainActivity_callCompleList(JNIEnv *env, jobject instanc
 
     }
 
-    //获取jvm
-
+    //通过有env的地方获取javaVM 并保存一个env
     env->GetJavaVM(&jvm);
     instan = env->NewGlobalRef(instance);
     callJavaMethod();
