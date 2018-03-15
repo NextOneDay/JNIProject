@@ -9,4 +9,6 @@ public class JNIManager {
     public static native String callNativeString(String str);
 
 
+    //通过定义宏来达到修改native函数
+    public static native String callName(String name);
 }
