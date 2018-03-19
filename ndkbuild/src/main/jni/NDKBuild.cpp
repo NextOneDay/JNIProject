@@ -20,7 +20,7 @@ JNIEXPORT jstring JNICALL Java_com_ndk_ndkbuild_JNIManager_callNativeString(JNIE
     return str;
 }
 
-// 现在只要使用这个宏然后传入方法名就能够调用，效果相当于原先的一长串
+// 现在只要使用这个宏然后传入方法名就能够调用，效果相当于原先的包名+方法名
 //这个写法比使用JNI_OnLoad 更方便，但是如果有比较复杂的需求，使用JNI_OnLoad 会比较好
 extern "C" JNIEXPORT jstring  FunctionName(callName)(JNIEnv *env, jclass obj,jstring jstr){
 
